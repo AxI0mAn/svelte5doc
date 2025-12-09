@@ -109,6 +109,48 @@ function changeSkin(skin) {
 }
 
 
+=============================================
+
+8.  Фоновый рисунок для <div>
+
+🛠️ Как правильно использовать импортированное изображение в CSS.
+В Svelte-компонентах есть два основных способа решения этой проблемы. Самый чистый и современный способ — использовать CSS Custom Properties (CSS-переменные).
+
+Использование CSS-переменной (Лучшая практика)
+Вам нужно:
+
+Импортировать изображение в <script>).
+
+Передать значение переменной (bg_img) в CSS Custom Property (переменную CSS) на уровне элемента.
+
+Использовать эту CSS-переменную в <style>-блоке.
+
+Код для компонента:
+
+Svelte
+
+<script>
+  import bg_img from '$lib/assets/images/20.jpeg';
+
+  /*  Объявляем переменную для props, если нужно */
+</script>
+/*  Передать значение переменной  */
+<div class="this_page" style="--bg-url: url('{bg_img}');">
+  </div>
+
+<style>
+.this_page {
+  /*   Используем CSS-переменную в CSS   */
+  background-image: var(--bg-url);
+  
+  /* Дополнительные стили для фона */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh; /* Убедитесь, что элемент имеет высоту */
+}
+</style>
+
 
 
 
