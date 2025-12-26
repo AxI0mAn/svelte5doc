@@ -9,6 +9,67 @@
         «theme»: «default», // Тема 
 }. Пользователь выбрал другую тему в меню, например «light». Необходимо внести изменения в localStorage.
 
+=====================================================================
+1. Создаем файл утилит storage.js
+
+В папке src/lib/utils/ (или там, где вам удобно) создайте файл, который будет отвечать за «грязную» работу с браузером.
+
+JavaScript
+
+// src/lib/utils/storage.js
+
+/**
+ * Сохраняет объект в localStorage
+ * @param {string} key 
+ * @param {any} data 
+ */
+export function saveToLocal(key, data) {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem(key, JSON.stringify(data));
+}
+
+/**
+ * Загружает данные из localStorage
+ * @param {string} key 
+ * @param {any} defaultValue 
+ */
+export function loadFromLocal(key, defaultValue) {
+    if (typeof localStorage === 'undefined') return defaultValue;
+    
+    const saved = localStorage.getItem(key);
+    try {
+        return saved ? JSON.parse(saved) : defaultValue;
+    } catch (e) {
+        console.error(`Ошибка при чтении ${key}:`, e);
+        return defaultValue;
+    }
+}
+
+Импортируем утилиты там где они нужны.
+
+====================================================================
+
+Маленький совет (Pro Tip)
+Если вы хотите пойти еще дальше, вы можете сделать сохранение автоматическим прямо в классе, используя $effect.root в конструкторе. Тогда вам даже не придется вызывать this.save() в каждом методе:
+
+JavaScript
+
+import { untrack } from 'svelte'; // импорт из svelte
+
+constructor() {
+    // Загрузка
+    const data = loadFromLocal('game_timer', { current: 12 });
+    this.current = data.current;
+
+    // Авто-сохранение при ЛЮБОМ изменении реактивных свойств класса
+    $effect.root(() => {
+        $effect(() => {
+            // Мы просто обращаемся к свойству, и Svelte начинает за ним следить
+            const dataToSave = { current: this.current };
+            saveToLocal('game_timer', dataToSave);
+        });
+    });
+}
 
 =====================================================================
 

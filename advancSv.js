@@ -39,12 +39,8 @@ parent.insertAdjacentElement('beforeend', section);
 
 
 section.insertAdjacentHTML('beforeend', `<hr><hr>
-<h3  class="title"> 
-Важное и не известное
-</h3>
-<h4>
-
-</h4>
+<h3  class="title">  </h3>
+<h4> </h4>
 
 <hr><hr> 
 `);
@@ -58,10 +54,9 @@ section.insertAdjacentHTML('beforeend', `<hr><hr>
 /* ===========================================================
 */
 
-
 taskCurrent++;
 taskSubnumber = 1;
-nameTask = 'test';
+nameTask = '$state.raw';
 
 console.log(`task ${taskCurrent} --------------------------`);
 section.insertAdjacentHTML('beforebegin', `<a href="#link${taskCurrent}">${taskCurrent}.  ${nameTask}</a><br>`);
