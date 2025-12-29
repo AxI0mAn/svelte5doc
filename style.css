@@ -69,7 +69,17 @@ a:hover {
 }
 
 ul li {
-  list-style: disc;
+  list-style-type: none;
+  margin: 12px;
+
+  &::marker {
+    content: '🟣 ';
+    font-size: .75rem;
+  }
+}
+
+ol li {
+  margin: 12px;
 }
 
 img {
@@ -117,7 +127,7 @@ body {
     radial-gradient(circle at 50% 50%,
       #bb99ff 0%,
       transparent 30%),
-    linear-gradient(180deg, #232f31, #1f5153, #087671, #009c88, #10c397, #3ecd8c, #5fd67f, #7fde70, #8eca51, #99b635);
+    linear-gradient(45deg, #5fd67f, #7fde70, #8eca51, #99b635, #3ecd8c, #10c397, #009c88);
 
 
 
@@ -298,6 +308,7 @@ a.homeBlock {
   font-size: xx-large;
   padding: 44px;
   border: 4px groove rgb(164, 140, 0);
+  color: #232f31;
   width: fit-content;
   flex: auto;
   transition: all .5s;
