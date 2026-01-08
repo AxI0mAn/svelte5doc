@@ -73,8 +73,18 @@ ul li {
   margin: 12px;
 
   &::marker {
-    content: '🟣 ';
+    content: '🟣  ';
     font-size: .75rem;
+  }
+}
+
+ul li ul li {
+  list-style-type: none;
+  margin: 12px;
+
+  &::marker {
+    content: '🟪  ';
+    font-size: .5rem;
   }
 }
 

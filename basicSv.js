@@ -4294,6 +4294,237 @@ section.insertAdjacentHTML('beforeend', `<hr><hr><h3 id="link${taskCurrent}" cla
 </article>`);
 
 
+/* ===========================================================*/
+
+
+taskCurrent++;
+taskSubnumber = 1;
+nameTask = 'Tweened';
+
+console.log(`task ${taskCurrent} --------------------------`);
+section.insertAdjacentHTML('beforebegin', `<a href="#link${taskCurrent}">${taskCurrent}.  ${nameTask}</a><br>`);
+section.insertAdjacentHTML('beforeend', `<hr><hr><h3 id="link${taskCurrent}" class="title"> <span id="${nameTask}"></span>   task  ${taskCurrent}. ${nameTask} </h3><hr><hr><article id="${nameTask}" class="article">
+  <a href="https://svelte.dev/tutorial/svelte/tweens">tutorial</a>
+<p>Класс Tweened (или функция tweened) из модуля svelte/motion — это инструмент для создания <strong>плавных переходов</strong> между значениями.
+
+Вместо того чтобы число мгновенно «прыгало» с 0 до 100, tweened заставляет его плавно «дотекать» до нужного состояния за определенное время.  </p>
+
+<p>tweened — это простейший способ добавить «лоска» и профессионального вида интерфейсу без написания сложных CSS-анимаций. Он берет на себя всю математику вычисления промежуточных значений.</p>
+ 
+<h5><mark>1. Как это работает?</mark></h5>
+<p>Когда вы обновляете значение обычного $state, оно меняется мгновенно. Когда вы обновляете tweened-стор, он запускает анимационный цикл, который постепенно меняет значение в течение указанной длительности.</p>
+
+<details>
+  <summary> <mark>2. Пример: Базовый синтаксис</mark> </summary>
+  <p>В Svelte 5 мы всё еще можем использовать tweened, но помним, что это Store. Поэтому для доступа к значению в разметке мы используем префикс $.</p>
+  <pre>
+    <code>
+      &#60;script>
+        import { tweened } from 'svelte/motion';
+        import { cubicOut } from 'svelte/easing';
+
+        // Создаем анимируемое значение
+        const progress = tweened(0, {
+          duration: 400,      // Длительность анимации в мс
+          easing: cubicOut    // Функция плавности (как именно движется значение)
+        });
+
+        function start() {
+          progress.set(100); // Плавно изменит значение от текущего до 100
+        }
+      &#60;/script>
+
+      &#60;progress value={$progress} max="100">&#60;/progress>
+
+      &#60;button onclick={start}>Запустить прогресс&#60;/button>
+    </code>
+  </pre>
+</details>
+  <h5><mark>3. Настройки (Options)</mark></h5>
+  <ul>
+    <p>При создании или вызове .set() / .update() можно передать объект настроек:</p>
+
+    <li>duration: время анимации (число или функция (from, to) => number).</li>
+
+    <li>delay: задержка перед началом.</li>
+
+    <li>easing: функция, определяющая характер движения (ускорение, замедление, отскок). Импортируются из svelte/easing.</li>
+
+    <li>interpolate: специальная функция для анимации сложных вещей (например, перетекание одного цвета в другой или одного массива в другой).</li>
+  </ul>
+
+  <h5><mark>4. Важный нюанс в Svelte 5</mark></h5>
+<p>Хотя tweened — это стор, он отлично дружит с рунами. Если тебе нужно, чтобы анимация зависела от $state, ты можешь использовать $derived.by или просто вызывать .set() внутри эффекта.</p>
+
+<details>
+  <summary>Пример «живого» счетчика очков:</summary>
+  <p></p>
+  <pre>
+    <code>
+      &#60;script>
+        import { tweened } from 'svelte/motion';
+        
+        let score = $state(0); // Твой основной стейт игры
+        const displayedScore = tweened(0); // То, что видит пользователь
+
+        // Следим за изменением реального счета и запускаем анимацию "визуального"
+        $effect(() => {
+          displayedScore.set(score);
+        });
+      &#60;/script>
+
+      &#60;div class="score">
+        Очки: {Math.round($displayedScore)}
+      &#60;/div>
+
+      &#60;button onclick={() => score += 500}>Добавить очки&#60;/button>
+    </code>
+  </pre>
+  <p></p>
+</details>
+</article>`);
+
+
+
+
+
+/* ===========================================================*/
+
+
+taskCurrent++;
+taskSubnumber = 1;
+nameTask = 'Tween';
+
+console.log(`task ${taskCurrent} --------------------------`);
+section.insertAdjacentHTML('beforebegin', `<a href="#link${taskCurrent}">${taskCurrent}.  ${nameTask}</a><br>`);
+section.insertAdjacentHTML('beforeend', `<hr><hr><h3 id="link${taskCurrent}" class="title"> <span id="${nameTask}"></span>   task  ${taskCurrent}. ${nameTask} </h3><hr><hr><article id="${nameTask}" class="article">
+  <a href="https://svelte.dev/tutorial/svelte/tweens">tutorial</a>
+
+<p>В Svelte 5 произошло разделение: tweened — это старая функция для работы со сторами (Svelte 4), а Tween — это новый класс, созданный специально для Svelte 5 и его системы рун.</p>
+
+
+<h5>🚀 Класс Tween в Svelte 5</h5>
+<p><strong> Класс Tween — это реактивный объект.  </strong>В отличие от сторов, он не требует подписки. Он хранит состояние анимации внутри себя и обновляет его автоматически.</p>
+
+<ul>
+<p><mark>Основные свойства:</mark></p>
+<li>.current: (Только для чтения) Текущее значение в данный момент времени. Именно его мы привязываем к HTML-элементам.</li>
+
+<li>.target: (Чтение и Запись) Конечное значение, к которому стремится анимация. Как только вы записываете сюда новое число, анимация запускается автоматически.</li>
+</ul>
+ 
+<ul>
+<p><mark>Дополнительные свойства и особенности:</mark></p>
+<li>Метод .set():  позволяет изменить цель и настройки анимации «на лету». Метод .set() возвращает Promise, который разрешится, когда анимация закончится.</li>
+<li>Метод .reset(value): Это антипод метода .set().  Мгновенно устанавливает текущее значение (.current) и цель (.target) в указанное число, без анимации.  Например, когда вам нужно «телепортировать» элемент в начало или сбросить прогресс-бар после завершения раунда так, чтобы пользователь не видел обратной анимации «откатывания».</li>
+<li>Свойство .is_animating (Только для чтения) - Это реактивное булево свойство.
+  Возвращает true, пока анимация находится в движении, и false, когда она остановилась.
+  Вы можете блокировать кнопку «Далее», пока цифры счета еще «бегут», или показывать какой-то эффект (свечение, искры), пока длится переход.</li>
+<li>Настройка interpolate - Это самая глубокая настройка. По умолчанию Tween умеет работать с числами, массивами чисел и объектами с числами. Но можно анимировать и цвета в формате HEX (#ff0000 -> #0000ff) или строки. Вы можете передать свою функцию интерполяции.</li>
+<li>Динамические настройки (Функции в опциях) - можно передавать duration и delay не просто как числа, а как функции. (Наприимер, duration: (from, to) => Math.abs(to - from) * 2, // Скорость зависит от расстояния) - Это сделает анимацию более естественной: маленькое изменение происходит быстро, а большое — дольше.</li>
+<li><ul>
+<p>Особенности:</p>
+<li>
+<p>⚠️ Обещания (Promises)</p>
+<p>Метод .set() возвращает Promise. Но есть нюанс: если вы запустили анимацию до 100, а через середину пути прервали её и запустили до 0, то первый Promise никогда не разрешится (resolve). Он будет отменен.</p></li>
+<li>
+<p>⚠️ Глубокая реактивность</p>
+<p>В отличие от $state, Tween не является глубоко реактивным в плане изменения внутренних свойств.</p>
+
+<p>Если вы анимируете объект const pos = new Tween({x: 0, y: 0}), вы не можете написать pos.target.x = 10.</p>
+
+<p>Вы обязаны перезаписать объект целиком: pos.target = {x: 10, y: 0}.</p>
+</li>
+<li>
+<p>⚠️ Синхронизация с кадрами</p>
+<p>Tween работает на базе requestAnimationFrame. Это означает, что он идеально синхронизирован с частотой обновления вашего монитора (60fps, 120fps и т.д.) и не нагружает процессор так сильно, как это делали бы интервалы setInterval.</p>
+</li>
+</ul></li>
+</ul>
+
+<h5>Резюме: Полный список API Tween</h5>
+<table border="1" >
+  <thead>
+    <tr>
+      <th>Имя</th>
+      <th>Тип</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="color:#000;"><code>.current</code></td>
+      <td style="color:#000;">Свойство (get)</td>
+      <td style="color:#000;">Текущее положение «в моменте».</td>
+    </tr>
+    <tr>
+      <td style="color:#000;"><code>.target</code></td>
+      <td style="color:#000;">Свойство (get/set)</td>
+      <td style="color:#000;">Конечная точка. Запись запускает анимацию.</td>
+    </tr>
+    <tr>
+      <td style="color:#000;"><code>.is_animating</code></td>
+      <td style="color:#000;">Свойство (get)</td>
+      <td style="color:#000;">Реактивный статус движения.</td>
+    </tr>
+    <tr>
+      <td style="color:#000;"><code>.set(val, opts)</code></td>
+      <td style="color:#000;">Метод</td>
+      <td style="color:#000;">Запуск анимации с возможностью переопределить настройки.</td>
+    </tr>
+    <tr>
+      <td style="color:#000;"><code>.reset(val)</code></td>
+      <td style="color:#000;">Метод</td>
+      <td style="color:#000;">Мгновенная установка значения без перехода.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>💎 Продвинутые возможности класса Tween</h5>
+<details>
+  <summary> 1. Анимация объектов и массивов</summary>
+<p>Tween умеет анимировать не только числа, но и целые структуры данных (объекты с числами, массивы). Он будет плавно менять каждое число внутри структуры.</p>
+  <pre>
+    <code>
+      JavaScript
+
+      const color = new Tween({ r: 255, g: 0, b: 0 });
+      // Позже...
+      color.target = { r: 0, g: 0, b: 255 }; 
+    </code>
+  </pre> 
+</details>
+
+<details>
+  <summary> 2. Управление в процессе (.set)</summary>
+<p>Хотя запись в .target удобна, иногда нужно больше контроля. Метод .set() позволяет изменить цель и настройки анимации «на лету»:</p>
+  <pre>
+    <code>
+      JavaScript
+
+      // Перейти к 200, но медленнее, чем обычно
+      x.set(200, { duration: 2000 });
+    </code>
+  </pre> 
+</details>
+
+<details>
+  <summary> 3. Обработка завершения</summary>
+<p>Метод .set() возвращает Promise, который разрешится, когда анимация закончится. Это полезно для цепочек действий:</p>
+
+  <pre>
+    <code>
+      JavaScript
+
+      async function jump() {
+        await x.set(100);
+        await x.set(0);
+        console.log('Прыжок завершен!');
+      }
+    </code>
+  </pre> 
+</details> 
+</article>`);
 
 
 taskCurrent++;
