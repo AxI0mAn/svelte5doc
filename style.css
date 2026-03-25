@@ -32,11 +32,11 @@ html,
 body {
   height: 100%;
   width: 100%;
-  font-size: 100%;
+  font-size: 16px;
   line-height: 1;
-  -ms-text-size-adjust: 100%;
+  /* -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; */
 }
 
 input,
@@ -116,7 +116,7 @@ body {
   margin: 0 auto;
   padding: 0 4px;
 
-  font-size: 20px;
+  /* font-size: 20px; */
   line-height: 1.2;
   color: rgb(40, 40, 20);
 
@@ -181,7 +181,7 @@ header {
 .goal.part {
   font-family: 'Courier New', Courier, monospace;
   letter-spacing: .5rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-shadow: 1px 1px 2px black, -1px -1px 2px black;
   color: rgba(192, 192, 192, .8);
   margin: 0 auto;
@@ -195,7 +195,7 @@ header {
 
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   letter-spacing: .3rem;
-  font-size: 3rem;
+  font-size: 2rem;
   letter-spacing: .7rem;
   color: rgba(187, 153, 255, .5);
   text-shadow: 0px 0px 24px rgba(255, 255, 255, 1), 1px 1px 1px rgba(0, 0, 0, 0.9), -1px -1px 1px rgba(255, 255, 255, 0.9);
@@ -312,19 +312,24 @@ a.linkOut:hover {
 }
 
 a.homeBlock {
-  max-width: 33%;
-  height: 88px;
+  /* max-width: 33%; */
   font-size: xx-large;
-  padding: 44px;
+
+  width: fit-content;
+  min-height: 3rem;
+
+
+  padding: 24px 44px;
   border: 4px groove rgb(164, 140, 0);
   color: #232f31;
-  width: fit-content;
+
   flex: auto;
-  transition: all .5s;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+
+  transition: all .5s;
 }
 
 a.homeBlock.knowNow {
@@ -395,8 +400,24 @@ section.homeMain {
   align-items: center;
 }
 
+@media screen and (max-width:480px) {
+  .homeMain {
+    border: 4px solid green;
+    margin: 4px;
+    justify-content: center;
+  }
+}
+
 section.homeMain>a:first-of-type {
   margin: 24px auto;
+}
+
+div.homeMain {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+
 }
 
 article.article,
@@ -758,4 +779,69 @@ input#practics13_1[data-state="high"] {
 .note {
   border: 1px solid whitesmoke;
   background-color: skyblue;
+}
+
+
+
+/* --- Модальное окно --- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Темный полупрозрачный фон */
+  display: none;
+  /* Скрыто по умолчанию, JS показывает */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Должен быть выше всего контента */
+}
+
+.modal-content {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
+  width: fit-content;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 44px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+}
+
+#password-input {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#submit-password {
+  background-color: #00796b;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+#submit-password:hover {
+  background-color: #004d40;
+}
+
+#auth-message.error {
+  color: #d32f2f;
+  margin-top: 10px;
+  font-weight: bold;
 }

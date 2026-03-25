@@ -10,33 +10,43 @@
 </head>
 
 <body>
+  <div id="auth-modal" class="modal">
+    <div class="modal-content">
+      <h2>Введите пароль</h2>
+      <input type="password" id="password-input" placeholder="Пароль">
+      <button id="submit-password">Войти</button>
+      <p id="auth-message" class="error"></p>
+    </div>
+  </div>
   <hr class="hrHome">
   <hr class="hrHome">
   <header>
-    <div class="goal">
-      <h2> Illinois... </h2>
-      <h2> Chicago... </h2>
-      <h2> Gold Coast.... </h2>
-    </div>
     <div class="time"></div>
   </header>
   <hr class="hrHome">
   <hr class="hrHome">
   <hr class="hrHome">
   <h1 id="up"> Svelte 5 </h1>
+  <main class="homeMain" id="homeMain">
+    <div>
+      <section class="homeMain">
+        <a class="linkOut" href="https://svelte.dev/tutorial/svelte/welcome-to-svelte">Svelte 5. Official Tutorial.</a>
+        <a class="linkOut" href="https://fubits.dev/notes/">Svelte 5. Patterns.</a>
+        <a class="linkOut" href="https://flowbite-svelte.com/">Svelte 5. UI components.</a>
+      </section>
 
-  <a class="linkOut" href="https://svelte.dev/tutorial/svelte/welcome-to-svelte">Svelte 5. Official Tutorial.</a>
-  <a class="linkOut" href="https://fubits.dev/notes/">Svelte 5. Patterns.</a>
-  <a class="linkOut" href="https://flowbite-svelte.com/">Svelte 5. UI components.</a>
-
-
-  <main class="homeMain">
-    <section class="homeMain">
-      <a class="homeBlock" href="./template.html">temp</a>
-      <a class="homeBlock" href="./assets/Создание нового проекта.md">Create New Project</a>
-      <a class="homeBlock" href="./assets/+page js Добавить страницу.md">Create New Page</a>
-      <a class="homeBlock" href="./assets/Работа с проектом из IDE.md">Commands in Terminal</a>
-    </section>
+      <section class="homeMain">
+        <a class="homeBlock" href="./template.html">temp</a>
+        <a class="homeBlock" href="./assets/Создание нового проекта.md">Create New Project</a>
+        <a class="homeBlock" href="./assets/СТРУКТУРА ПАПОК ПРОЕКТА/src structura.md">Structura Folders on Project</a>
+        <a class="homeBlock" href="./assets/+page js Добавить страницу.md">Create New Page</a>
+        <a class="homeBlock" href="./assets/CODING/a Наследование макетов.md">Наследование макетов</a>
+        <a class="homeBlock" href="./assets/make_PWA.md">make PWA</a>
+        <a class="homeBlock"
+          href="/assets/ПОДГОТОВКА ПРОЕКТА/Шпаргалка: Полный цикл разработки Feature Workflow CICD.md">Feature Workflow
+          CICD</a>
+      </section>
+    </div>
     <div>
       <section class="homeMain">
         <a href="./basicSv.html" class="goal part">Basic Svelte</a>
@@ -115,24 +125,26 @@
         <a href="" class="homeBlock">Theme 1</a>
       </section>
     </div>
-  </main>
 
-  <hr class="hrHome">
-  <div class="goal">
-    <h2>Goal! Illinois... Chicago... Gold Coast... </h2>
-  </div>
-  <hr class="hrHome">
-  <hr class="hrHome">
-
-  <footer>
-    <div>
-      <a class="linkOut" href="../Tasks_Trepachev/book_prime/index.html">Конспект по "Трепачёв основной учебник."</a>
-      <a class="linkOut" href="../Tasks_Trepachev/book_higer/index.html">Конспект по "Трепачёв Высший учебник
-        JavaScript."</a>
+    <hr class="hrHome">
+    <div class="goal">
+      <h2>Goal! Illinois... Chicago... Gold Coast... </h2>
     </div>
+    <hr class="hrHome">
+    <hr class="hrHome">
 
-    <a id="btn_Up" href="#up">UP</a>
-  </footer>
+    <footer>
+      <div>
+        <a class="linkOut" href="../Tasks_Trepachev/book_prime/index.html">Конспект по "Трепачёв основной учебник."</a>
+        <a class="linkOut" href="../Tasks_Trepachev/book_higer/index.html">Конспект по "Трепачёв Высший учебник
+          JavaScript."</a>
+      </div>
+
+    </footer>
+  </main>
+  <a id="btn_Up" href="#up">UP</a>
+
+  <script src="./script.js"></script>
 
   <script>
     (function () {
@@ -148,14 +160,22 @@
         }
       }
 
-      let timerId = setInterval(function () {
-        let hour = new Date().getHours();
-        let minute = new Date().getMinutes();
-        let second = new Date().getSeconds();
 
-        clock.textContent = `${addZero(hour)}:${addZero(minute)}:${addZero(second)}`
+      let timerId = setInterval(function () {
+        let now = new Date();
+        let year = now.getFullYear();
+        let month = now.getMonth();
+        let day = now.getDate();
+        let hour = now.getHours();
+        let minute = now.getMinutes();
+        let second = now.getSeconds();
+
+        clock.textContent = `${addZero(day)}.${addZero(month + 1)}.${year}  ${addZero(hour)}:${addZero(minute)}:${addZero(second)}`
       }, 1000);
+
+
     })();
+
   </script>
 
 </body>
