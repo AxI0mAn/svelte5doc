@@ -402,7 +402,6 @@ section.homeMain {
 
 @media screen and (max-width:480px) {
   .homeMain {
-    border: 4px solid green;
     margin: 4px;
     justify-content: center;
   }
