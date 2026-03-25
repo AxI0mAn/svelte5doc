@@ -373,10 +373,10 @@ main {
 
 main.homeMain,
 .homeMain {
-  margin: 20px;
+  /* margin: 20px; */
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   gap: 8px;
 }
@@ -393,7 +393,7 @@ main.homeMain:last-child {
 }
 
 section.homeMain {
-  margin: 20px;
+  /* margin: 20px; */
   display: flex;
   flex-flow: column wrap;
   justify-content: space-around;
@@ -402,7 +402,7 @@ section.homeMain {
 
 @media screen and (max-width:480px) {
   .homeMain {
-    margin: 4px;
+    padding: 4px;
     justify-content: center;
   }
 }
@@ -444,14 +444,6 @@ article.practics {
   font-family: 'Trebuchet MS', sans-serif;
 }
 
-pre:has(code) {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 15px;
-  border: 1px groove rgba(244, 244, 244, .5);
-  overflow-x: auto;
-  border-radius: 4px;
-}
 
 summary {
   width: fit-content;
@@ -465,7 +457,7 @@ summary {
 code {
   color: #fff;
   font-family: monospace;
-  font-size: 1.2em;
+  font-size: .75em;
 }
 
 .showcase {}
@@ -493,6 +485,15 @@ pre {
   font-size: large;
   color: rgb(18, 0, 83);
   max-width: 80%;
+}
+
+
+pre:has(code) {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px groove rgba(244, 244, 244, .5);
+  overflow-x: auto;
+  border-radius: 4px;
 }
 
 strong {
