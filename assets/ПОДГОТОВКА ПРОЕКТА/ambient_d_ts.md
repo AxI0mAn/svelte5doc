@@ -14,10 +14,12 @@
 Шаг 1: Создание файла объявления типов (.d.ts)
 Создайте файл объявления типов в папке src, который будет доступен для TypeScript.
 src/ambient.d.ts (Или src/app.d.ts, если вы хотите использовать стандартный файл SvelteKit)
+
 TypeScript
+
 // src/ambient.d.ts (или app.d.ts)
 
-// ⭐️ Объявляем модули для всех статических ассетов, которые мы импортируем.
+// Объявляем модули для всех статических ассетов, которые мы импортируем.
 // Мы говорим TypeScript, что импорт этих файлов вернет строковое значение (URL).
 
 declare module '*.webp' {
@@ -35,14 +37,31 @@ declare module '*.jpeg' {
   export default src;
 }
 
+// 1. Для импорта SVG как строки (через {@html ...})
+declare module '*.svg?raw' {
+  const content: string;
+  export default content;
+}
+
+// 2. Для импорта SVG как Svelte-компонента (через <Icon />)
+declare module '*.svg?svelte' {
+  import type { Component } from 'svelte';
+  const component: Component<any>;
+  export default component;
+}
+
+// 3. Базовая декларация для обычных импортов SVG
 declare module '*.svg' {
-  const src: string;
-  export default src;
+  const content: string;
+  export default content;
+}
+
+declare module '*.json' {
+  const value: any;
+  export default value;
 }
 
 // Добавьте сюда любые другие форматы, которые вы планируете импортировать (например, .mp4, .json)
-
-
 
 Шаг 2: Убедитесь, что tsconfig.json включает этот файл
 Если вы используете стандартный файл src/app.d.ts, он будет включен автоматически. Если вы создали src/ambient.d.ts, убедитесь, что ваш корневой tsconfig.json включает его в раздел include:

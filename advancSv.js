@@ -204,6 +204,25 @@ section.insertAdjacentHTML('beforeend', `<hr><hr><h3 id="link${taskCurrent}" cla
 
 <p>Это удобно, когда вам нужно передать какое-либо состояние внешней библиотеке или API, которые не ожидают прокси.</p>
 
+<h2>ВАЖНЕЙШИЙ МОМЕНТ!!!!</h2>
+<p>Если нужно вывести в консоль значения, которые объявлены через руну $state(), то используется именно $state.snapshot</p>
+
+<pre>
+есть Store оформленный как класс со строкой:
+  historySession = $state([]); 
+
+в другом месте необходимо проконтролировать что именно в ней происходит.
+
+Делаем так:
+appState.historySession.push(toHistory);
+console.log({
+  'display': appState.display, 
+  'historySession': $state.snapshot(appState.historySession), 
+  // ПРИМЕНЯЕМ snapshot Т.К. до этого МУТИРУЕМ МАССИВ 
+  // в строке appState.historySession.push(toHistory);
+})
+</pre>
+
 <details>
   <summary>Пример кода</summary>
   <p></p>
