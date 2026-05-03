@@ -63,7 +63,7 @@
         git pull origin main
 
     3. Удалите локальную временную ветку: 
-        git branch -d feat-pwa
+        git branch -d fixToDo
 
 (Если Git ругается, что ветка не объединена, но вы уверены в успехе мерджа — используйте -D).
 
@@ -71,7 +71,7 @@
         git fetch --prune
 
     5. Создайте НОВУЮ ветку под НОВУЮ задачу. Это самый важный момент. Каждая фича — новая ветка.
-        git checkout -b feat-new-logic
+        git checkout -b nextToDo
 
 
 Полезные команды "на всякий случай"
@@ -84,7 +84,6 @@
             git branch -a
     • Перейти в  ветку feat-new-logic: 
             git branch feat-new-logic
-
 
 
 
