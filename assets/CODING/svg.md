@@ -1,32 +1,18 @@
-﻿# 1. 🖼️ Использование SVG как <img> (URL)
-# 2. 🧩 Использование SVG как Svelte-компонент.
-# 3.  📝 Использование как текстовый код (?raw) как <svg> (вставив в разметку через {@html svgContent})
+1. 🖼️ Использование SVG как  (URL)
+2. 🧩 Использование SVG как Svelte-компонент.
+3. 📝 Использование как текстовый код (?raw) как (вставив в разметку через {@html svgContent})
+4. Стилизация с :global(svg) для '*.svg?raw' 
+
 
 Для корректной работы с SVG и устранения предупреждений TypeScript, добавьте декларации в src/ambient.d.ts, как показано ниже, а затем выберите подходящий метод импорта.
 
-// 1. Для импорта SVG как строки (через {@html ...})
-declare module '*.svg?raw' {
-  const content: string;
-  export default content;
-}
+// 1. Для импорта SVG как строки (через {@html ...}) declare module '*.svg?raw' { const content: string; export default content; }
 
-// 2. Для импорта SVG как Svelte-компонента (через <Icon />)
-declare module '*.svg?svelte' {
-  import type { Component } from 'svelte';
-  const component: Component<any>;
-  export default component;
-}
+// 2. Для импорта SVG как Svelte-компонента (через ) declare module '*.svg?svelte' { import type { Component } from 'svelte'; const component: Component; export default component; }
 
-// 3. Базовая декларация для обычных импортов SVG
-declare module '*.svg' {
-  const content: string;
-  export default content;
-}
+// 3. Базовая декларация для обычных импортов SVG declare module '*.svg' { const content: string; export default content; }
 
-
-
-1. 🖼️ Использование SVG как <img> (URL)
-
+🖼️ Использование SVG как  (URL)
 Этот способ используется, когда SVG — это статичная картинка, которую не нужно перекрашивать через CSS.
 
 Как это работает:
@@ -39,17 +25,11 @@ Vite: Возвращает публичный URL-адрес файла.
 
 Использование:
 
-<img src={iconUrl} alt="Иконка" />
-
+Иконка
 
 Вывод: Идеально для простых иллюстраций. Стилизация через CSS (например, fill: red) невозможна.
 
-
-
-
-
-2. 🧩 Использование SVG как Svelte-компонент (?svelte)
-
+🧩 Использование SVG как Svelte-компонент (?svelte)
 Этот способ превращает SVG в полноценный компонент.
 
 Внимание: Этот метод требует специального плагина (например, vite-plugin-svelte-gd или аналогичных). Если плагин не настроен или конфликтует с SSR (Server Side Rendering), вы можете получить ошибку 500 при npm run dev или сборке, так как сервер пытается обработать SVG как сложный JS-объект.
@@ -60,19 +40,11 @@ Vite: Возвращает публичный URL-адрес файла.
 
 import IconComponent from '$lib/assets/my-icon.svg?svelte';
 
-
 Использование:
-
-<IconComponent class="icon-style" />
-
 
 Вывод: Удобно для стилизации, но может вызвать ошибки 500, если окружение не настроено для обработки таких импортов на сервере.
 
-
-
-
-3. 📝 Использование как текстовый код (?raw)
-
+📝 Использование как текстовый код (?raw)
 Это наиболее надежный способ для динамических компонентов (как ваш калькулятор). Он позволяет вставить код SVG напрямую в HTML-разметку, сохраняя возможность управления стилями через CSS.
 
 Как это работает:
@@ -81,16 +53,11 @@ import IconComponent from '$lib/assets/my-icon.svg?svelte';
 
 import iconSettings from '$lib/assets/svgIcon/settings.svg?raw';
 
-
 Vite: Не пытается создать компонент, а просто передает содержимое файла .svg.
 
 Использование: Используйте тег {@html} для вывода строки в DOM.
 
-<button>
-  {@html iconSettings}
-</button>
-
-
+{@html iconSettings}
 Преимущества:
 
 Нет ошибки 500: Это чистая строка, она безопасна для SSR.
@@ -100,3 +67,39 @@ Vite: Не пытается создать компонент, а просто �
 Простота: Не требует тяжелых плагинов трансформации.
 
 Рекомендация: Если вы столкнулись с ошибкой 500 при использовании компонентов, переходите на ?raw. Это гарантирует стабильность приложения и дает полный контроль над внешним видом иконки.
+
+
+Для того чтобы уменьшить SVG, импортированный как ?raw (то есть вставленный напрямую в DOM через {@html}), нам нужно нацелиться на тег svg внутри вашего селектора.
+
+Поскольку SVG по умолчанию часто имеет фиксированные width и height в атрибутах, лучше всего масштабировать его через transform или управлять размерами контейнера.
+
+Вот самый надежный способ сделать это в Svelte:
+
+Вариант 1: Масштабирование через transform (Рекомендуется)
+Этот способ гарантированно уменьшит иконку, даже если внутри SVG жестко прописаны размеры в пикселях.
+
+Svelte
+<style lang="scss">
+  .btn__interface {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Стили для SVG внутри кнопки
+    :global(svg) {
+      transition: transform 0.3s ease; // Плавность для красоты
+    }
+  }
+
+  @media screen and (max-width: 480px) and (orientation: portrait),
+         screen and (max-height: 480px) and (orientation: landscape) {
+    .btn__interface :global(svg) {
+      transform: scale(0.7); // Уменьшаем до 70%
+    }
+  }
+</style>
+
+Почему здесь :global(svg)?
+В Svelte стили компонентов изолированы (scoped). Так как код SVG вставляется динамически через {@html}, Svelte не «видит» этот тег на этапе компиляции и не помечает его своим уникальным классом. Использование :global() сообщает Svelte: «примени этот стиль к тегу svg внутри .btn__interface, даже если ты его не видишь в разметке».
+
+
