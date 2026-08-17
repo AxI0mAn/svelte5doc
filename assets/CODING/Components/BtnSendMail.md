@@ -24,6 +24,7 @@
 Вкладка Email Templates -> Создаешь шаблон письма. Пишешь там текст, используя переменные из формы:
 
 Plaintext
+
 Имя: {{user_name}}
 Email: {{user_email}}
 Сообщение: {{message}}
