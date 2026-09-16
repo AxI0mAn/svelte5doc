@@ -1,4 +1,58 @@
-﻿Для приложения с двумя темами (например, Светлая и Темная) лучшая практика состоит в том, чтобы разделить переменные на три логических слоя внутри файла _variables.scss:
+﻿Ниже инфо о _variables.scss
+
+Настройки для работы двух тем сделать в трёх файлах:
+
+---------------------------
+src/routes/(home)/settings/+page.svelte
+
+## добавить тёмная и светлая тема
+<section class="setting-group">
+		<span class="label">Color theme</span>
+		<div class="radio-group">
+			<label class="radio-item">
+				<input type="radio" bind:group={appStore.theme} value="light" />
+				<span class="btn-check">Light</span>
+			</label>
+			<label class="radio-item">
+				<input type="radio" bind:group={appStore.theme} value="dark" />
+				<span class="btn-check">Dark</span>
+			</label>
+		</div>
+	</section>
+-------------------------------
+src/lib/store/appStore.svelte.js
+
+/** цветовая тема приложения
+   * @type {'light' | 'dark'} */
+  theme = $state('dark');
+
+      // Прямое присвоение в публичные свойства
+      if (parsed.theme) this.theme = parsed.theme;
+
+  /** Сериализация состояния для сохранения */
+  serialize() {
+    return {
+      theme: this.theme,
+------------------------------------------------
+src/routes/+layout.svelte
+
+//======================== смена цветовой темы приложения
+	// Руна $effect будет следить за изменением appStore.theme
+	$effect(() => {
+		document.documentElement.setAttribute('data-theme', appStore.theme);
+	});
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+Для приложения с двумя темами (например, Светлая и Темная) лучшая практика состоит в том, чтобы разделить переменные на три логических слоя внутри файла _variables.scss:
 
     1. Базовые/Структурные переменные: Не зависят от темы (шрифты, отступы, размеры).
 
