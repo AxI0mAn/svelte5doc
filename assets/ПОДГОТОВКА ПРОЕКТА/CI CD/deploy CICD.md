@@ -4,7 +4,7 @@
 
 
 ===========================
-# FIRST  DEPLOY   - 🚀 Алгоритм развертывания SvelteKit на GitHub Pages
+# FIRST  DEPLOY   - 🚀 Алгоритм развертывания SvelteKit на GitHub Pages.
 
 1. 🛠️ Проверка и Подготовка (Локально)
 
