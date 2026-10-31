@@ -7,7 +7,7 @@ SvelteKit — это фреймворк для построения интерф
 
 Vite PWA делает это автоматически: он пересобирает список всех файлов при каждой сборке и дает им версии.
 
-3. Автоматическое обновление для пользователей
+Автоматическое обновление для пользователей
 Чтобы приложение само обновлялось у пользователей без "белого экрана" и зависаний, нам нужно настроить стратегию Self-Update.
 
 
@@ -28,13 +28,17 @@ Vite PWA делает это автоматически: он пересобир
 
 
 Для перехода на автоматическое обновление (Self-Update) через vite-pwa нам нужно аккуратно внедрить плагин SvelteKitPWA в твой существующий конфиг, сохранив все настройки SCSS, алиасов и автопрефиксера.
-Шаг 1: Установка
+
+# Шаг 1: Установка
 Сначала установи саму библиотеку (если еще не сделал):
 Bash
+
 npm add -D @vite-pwa/sveltekit
-Шаг 2: Обновленный vite.config.js
+
+# Шаг 2: Обновленный vite.config.js
 Я объединил твой текущий код с настройками PWA.
 JavaScript
+
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import path from 'path';
@@ -98,9 +102,12 @@ export default defineConfig({
     },
   },
 });
-Шаг 3: Настройка src/routes/+layout.svelte
+
+
+# Шаг 3: Настройка src/routes/+layout.svelte
 Чтобы браузер понимал, что нужно проверить наличие обновлений и активировать новый Service Worker, добавь этот блок в твой главный лейаут.
 Svelte
+
 <script>
   import { onMount } from 'svelte';
   import { pwaInfo } from 'virtual:pwa-info'; // Информация о манифесте
@@ -139,15 +146,19 @@ Svelte
 
 
 
-ошибки в src/routes/+layout.svelte
+##   возможные ошибки в src/routes/+layout.svelte
 1. 'virtual:pwa-info' - Cannot find module 'virtual:pwa-info' or its corresponding type declarations.
 2. import('virtual:pwa-register') - Cannot find module 'virtual:pwa-register' or its corresponding type declarations.
 Эти ошибки — абсолютно нормальное явление при первой настройке PWA. Они возникают потому, что модули с префиксом virtual: не существуют физически на диске — их генерирует Vite «на лету» во время работы. TypeScript (или VS Code) об этом не знает и паникует.
+
 Вот как это исправить пошагово:
+
 1. Исправление ошибок импорта (TypeScript/VS Code)
 Тебе нужно объяснить редактору, что эти модули существуют.
+
 Вариант А (Самый простой):   добавь в существующий src/ambient.d.ts следующее содержимое:
 TypeScript
+
 declare module 'virtual:pwa-info' {
         export const pwaInfo: {
                 webManifest: {
@@ -217,11 +228,17 @@ JSON
     • На 5173 у тебя остался «зомби-воркер» от старой ручной системы.
     • На 8080 чистая территория. @vite-pwa/sveltekit развернул там свою новую, автоматизированную инфраструктуру, и браузер её сразу принял.
 
-Твой план действий для финального деплоя на GitHub:
+
+
+
+## Твой план действий для финального деплоя на GitHub:
+
 Теперь, когда мы убедились в работоспособности системы в режиме preview, можно выходить «в продакшн».
-Шаг 1. Чистка src/app.html (Финальная проверка)
+
+# Шаг 1. Чистка src/app.html (Финальная проверка)
 Убедись, что там нет строки <script src="/sw.js"></script> или любого ручного упоминания sw.js. Всё управление теперь только внутри +layout.svelte через virtual:pwa-register.
-Шаг 2. Конфиг vite.config.js
+
+# Шаг 2. Конфиг vite.config.js
 Проверь, что в SvelteKitPWA секция workbox выглядит так (это важно для GitHub Pages):
 JavaScript
 workbox: {
@@ -230,7 +247,8 @@ workbox: {
   // Настройка для правильной работы путей в папке репозитория
   navigateFallback: 'index.html' 
 }
-Шаг 3. Деплой
+
+# Шаг 3. Деплой
     1. Сделай push в репозиторий.
     2. Когда GitHub Pages обновится, зайди на сайт.
     3. Внимание: В первый раз на реальном сайте тебе, скорее всего, всё равно придется нажать "Clear site data" в DevTools, чтобы «убить» старый воркер, который привязан к домену axi0man.github.io/axio_calcul/.
